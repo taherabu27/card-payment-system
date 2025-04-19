@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Payment System 2</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="container mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Payment Management System</h1>
+
+    <fieldset class="border-2 text-center">
+      <p><span class="bg-cyan-400 py-1 px-2">Payment Information</span></p>
+      <table class="text-left mt-4">
+        <tr>
+          <td>Search Card Number or ID</td>
+          <td class="border-1 bg-blue-300">
+            <input type="text" name="" id="input-card" >
+          </td>
+          <td>
+            <button id="search-card" class="bg-blue-400 px-2 rounded">Search</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Card Number:</td>
+          <td class="border-1 bg-blue-100">
+            <span id="appear-card-number"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>Name:</td>
+          <td class="border-1 bg-blue-100">
+            <span id="appear-card-name"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>Contact:</td>
+          <td class="border-1 bg-blue-100">
+            <span id="contact"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>Address:</td>
+          <td class="border-1 bg-blue-100">
+            <span id="address"></span>
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+  </div>
+  <script src="script2.js"></script>
+</body>
+</html>
