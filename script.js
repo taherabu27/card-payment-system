@@ -199,7 +199,19 @@ function addPaymentInfo(event) {
   }
 
   renderPaymentInformation()
-  document.getElementById("payment-form").reset();
+
+  //Reset The payment form...////
+  document.getElementById("payment-form").reset(); 
+
+   // Clear any non-input (text) fields manually
+   document.getElementById("appear-card-number").innerText = "";
+   document.getElementById("appear-card-name").innerText = "";
+   document.getElementById("name-oncard").innerText = "";
+   document.getElementById("contact").innerText = "";
+   document.getElementById("address").innerText = "";
+   document.getElementById("credit-account-number").innerText = "";
+   document.getElementById("branch").innerText = "";
+ 
 }
 
 
@@ -230,6 +242,7 @@ document
 
 document
   .getElementById("payment-form")
-  .addEventListener("submit", addPaymentInfo);  
+  .addEventListener("submit", addPaymentInfo); 
+  
 
   renderPaymentInformation();
