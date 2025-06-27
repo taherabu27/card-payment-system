@@ -90,38 +90,24 @@ let finalPaymentInfo = [...personCardInfo];
 let paymentRecords = [];
 let editIndex = [];
 
-// const validPayment = (paidAmount) => {
-//   for (let i = 0; i < accountInfo.length; i++) {
-//     const account = accountInfo[i].accountNo;
-//     const presentBalance = accountInfo[i].balance;
-//     if (!account) {
-//       return false;
-//     } else {
-//       if (paidAmount > presentBalance) {
-//         return false;
-//       }
-//     }
-//   }
-//   return true;
-// };
 
 
 // check the payment validation through account balance and paidamount...
 
 const validPayment = (accountNo, paidAmount) => {
   const account = accountInfo.find((acc) => acc.accountNumber === accountNo);
+  const amount = parseFloat(paidAmount);
   if (!account) {
     alert("Enter the valid account Number");
     return false;
-  } else if (paidAmount > account.balance) {
+  } else if (amount > account.balance) {
     alert("Insufficient balance. Payment cannot be completed.");
     return false;
   }
   //deduct the account balance
-  account.balance -= paidAmount;
+  account.balance -= amount;
   return true;
 };
-
 
 // fetch the card information from array...
 function fetchInfoFromArray() {
@@ -151,7 +137,6 @@ function renderCardInfo(information) {
   document.getElementById("credit-account-number").innerText =
     information.creditAccount;
   document.getElementById("branch").innerText = information.branch;
-
 }
 
 // add payment information and submit the payment form to payment information table...
@@ -171,6 +156,14 @@ function addPaymentInfo(event) {
   ).innerText;
   const branchNo = document.getElementById("branch").innerText;
 
+  if (amountPaid === "" || debitAccountNumber === "" || paymentTypeBdt === "") {
+    return alert("Input Value can't be Blank");
+  }
+
+  if (!validPayment(debitAccountNumber, amountPaid)) {
+    return false;
+  }
+
   const addPaymentInTable = {
     card: cardNumber,
     name: cardName,
@@ -182,59 +175,56 @@ function addPaymentInfo(event) {
     creditAccount: creditAccountNumber,
     branch: branchNo,
   };
+  paymentRecords.push(addPaymentInTable);
 
-  if (editIndex !== null) {
-    paymentRecords[editIndex] = addPaymentInTable;
-    editIndex = null;
-  } else if (
-    amountPaid === "" &&
-    debitAccountNumber === "" &&
-    paymentTypeBdt === ""
-  ) {
-    return alert("Input Value can't be Blank");
-  } else if (!validPayment(debitAccountNumber, amountPaid)) {
-    return false;
-  } else {
-    paymentRecords.push(addPaymentInTable);
-  }
+  alert("Payment submitted successfully")
 
-  renderPaymentInformation()
+  // save the data to local storage
+  localStorage.setItem("paymentData", JSON.stringify(paymentRecords));
+
+  // window.location.href = "report.html";
+  window.open("report.html", "_blank");
+
+  renderPaymentInformation();
 
   //Reset The payment form...////
-  document.getElementById("payment-form").reset(); 
+  document.getElementById("payment-form").reset();
 
-   // Clear any non-input (text) fields manually
-   document.getElementById("appear-card-number").innerText = "";
-   document.getElementById("appear-card-name").innerText = "";
-   document.getElementById("name-oncard").innerText = "";
-   document.getElementById("contact").innerText = "";
-   document.getElementById("address").innerText = "";
-   document.getElementById("credit-account-number").innerText = "";
-   document.getElementById("branch").innerText = "";
- 
+  // Clear any non-input (text) fields manually
+  document.getElementById("appear-card-number").innerText = "";
+  document.getElementById("appear-card-name").innerText = "";
+  document.getElementById("name-oncard").innerText = "";
+  document.getElementById("contact").innerText = "";
+  document.getElementById("address").innerText = "";
+  document.getElementById("credit-account-number").innerText = "";
+  document.getElementById("branch").innerText = "";
 }
-
 
 // render payment information
-function renderPaymentInformation() {
-  const paidInfo = document.getElementById("payment-information");
-  paidInfo.innerHTML = "";
 
-  paymentRecords.forEach(function (info) {
-    const paidRow = document.createElement("tr");
-    paidRow.innerHTML = `
-              <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.card}</td>
-              <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.name}</td>
-              <td class="text-center border-solid border-2 border-slate-500 ppx-8 m-6">${info.paid}</td>
-              <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6"> ${info.debitAccountNo}</td>
-              <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.bdt}</td>
-              <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.contact}</td>
-              <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.creditAccount}</td>
-              <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.branch}</td>
-    `;
-    paidInfo.appendChild(paidRow);
-  });
-}
+
+// window.onload = function renderPaymentInformation() {
+//   const paymentData = JSON.parse(localStorage.getItem("paymentData")) || [];
+//   const paidInfo = document.getElementById("payment-information");
+//   paidInfo.innerHTML = "";
+
+//   paymentData.forEach(function (info) {
+//     const paidRow = document.createElement("tr");
+//     paidRow.innerHTML = `
+//               <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.card}</td>
+//               <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.name}</td>
+//               <td class="text-center border-solid border-2 border-slate-500 ppx-8 m-6">${info.paid}</td>
+//               <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6"> ${info.debitAccountNo}</td>
+//               <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.bdt}</td>
+//               <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.contact}</td>
+//               <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.creditAccount}</td>
+//               <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.branch}</td>
+//     `;
+//     paidInfo.appendChild(paidRow);
+//   });
+// };
+
+
 
 document
   .getElementById("search-card")
@@ -242,7 +232,6 @@ document
 
 document
   .getElementById("payment-form")
-  .addEventListener("submit", addPaymentInfo); 
-  
+  .addEventListener("submit", addPaymentInfo);
 
-  renderPaymentInformation();
+renderPaymentInformation();

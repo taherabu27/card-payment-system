@@ -1,0 +1,56 @@
+//in index page...
+const paymentChannel = new BroadcastChannel('payment_sync');
+
+function addPaymentInfo(event) {
+  event.preventDefault();
+
+  // ...your existing logic...
+
+  paymentRecords.push(addPaymentInTable);
+  localStorage.setItem("paymentData", JSON.stringify(paymentRecords));
+
+  // ✅ Notify report.html that there's new data
+  paymentChannel.postMessage({ type: "update" });
+
+  // ✅ Open report.html only if not already opened
+  if (!window.reportWindow || window.reportWindow.closed) {
+    window.reportWindow = window.open("report.html", "_blank");
+  }
+}
+
+//
+ //in report page...
+
+<script>
+  function renderReport() {
+    const paymentData = JSON.parse(localStorage.getItem("paymentData")) || [];
+    const tbody = document.getElementById("payment-information");
+    tbody.innerHTML = "";
+
+    paymentData.forEach(info => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${info.card}</td>
+        <td>${info.name}</td>
+        <td>${info.paid}</td>
+        <td>${info.debitAccountNo}</td>
+        <td>${info.bdt}</td>
+        <td>${info.contact}</td>
+        <td>${info.creditAccount}</td>
+        <td>${info.branch}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // ✅ Initial render
+  window.onload = renderReport;
+
+  // ✅ Listen for updates from index.html
+  const paymentChannel = new BroadcastChannel('payment_sync');
+  paymentChannel.onmessage = (event) => {
+    if (event.data.type === "update") {
+      renderReport(); // re-render with latest data
+    }
+  };
+</script>
