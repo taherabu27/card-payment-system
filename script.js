@@ -90,8 +90,6 @@ let finalPaymentInfo = [...personCardInfo];
 let paymentRecords = [];
 let editIndex = [];
 
-
-
 // check the payment validation through account balance and paidamount...
 
 const validPayment = (accountNo, paidAmount) => {
@@ -177,7 +175,7 @@ function addPaymentInfo(event) {
   };
   paymentRecords.push(addPaymentInTable);
 
-  alert("Payment submitted successfully")
+  alert("Payment submitted successfully");
 
   // save the data to local storage
   localStorage.setItem("paymentData", JSON.stringify(paymentRecords));
@@ -200,31 +198,44 @@ function addPaymentInfo(event) {
   document.getElementById("branch").innerText = "";
 }
 
-// render payment information
+// registration Info
 
+const userRegistration = (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const registrationId = document.getElementById("office-id").value;
+  const branchId = document.getElementById("branch-name").value;
+  const branchCode = document.getElementById("branch-code").value;
+  const passcode = document.getElementById("password").value;
+  const passCodeConfirm = document.getElementById("confirm-password").value;
 
-// window.onload = function renderPaymentInformation() {
-//   const paymentData = JSON.parse(localStorage.getItem("paymentData")) || [];
-//   const paidInfo = document.getElementById("payment-information");
-//   paidInfo.innerHTML = "";
+  // simple validation
+  if (!name || !email || !passcode) {
+    return alert("input all the information");
+  }
 
-//   paymentData.forEach(function (info) {
-//     const paidRow = document.createElement("tr");
-//     paidRow.innerHTML = `
-//               <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.card}</td>
-//               <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.name}</td>
-//               <td class="text-center border-solid border-2 border-slate-500 ppx-8 m-6">${info.paid}</td>
-//               <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6"> ${info.debitAccountNo}</td>
-//               <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.bdt}</td>
-//               <td class=" text-center border-solid border-2 border-slate-500 px-8 m-6">${info.contact}</td>
-//               <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.creditAccount}</td>
-//               <td class="text-center border-solid border-2 border-slate-500 px-8 m-6">${info.branch}</td>
-//     `;
-//     paidInfo.appendChild(paidRow);
-//   });
-// };
+  const randomNumber = Math.floor(Math.random() * 100000);
+  const userId = randomNumber;
 
+  const createUser = {
+    userId,
+    name,
+    email,
+    registrationId,
+    branchId,
+    branchCode,
+    passcode,
+    passCodeConfirm,
+  };
 
+  localStorage.setItem(userId, JSON.stringify(createUser));
+
+  document.getElementById(
+    "resultMessage"
+  ).textContent = `Registration successful! Your User ID is: ${userId}`;
+  
+};
 
 document
   .getElementById("search-card")
@@ -234,4 +245,11 @@ document
   .getElementById("payment-form")
   .addEventListener("submit", addPaymentInfo);
 
+document
+  .getElementById("registration-form")
+  .addEventListener("submit", userRegistration);
+
+  
+
 renderPaymentInformation();
+userRegistration();
