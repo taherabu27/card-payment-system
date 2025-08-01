@@ -247,9 +247,7 @@ document
 
 document
   .getElementById("registration-form")
-  .addEventListener("submit", userRegistration);
-
-  
+  .addEventListener("submit", userRegistration);  
 
 renderPaymentInformation();
 userRegistration();
